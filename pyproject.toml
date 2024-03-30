@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "socket-io"
+version = "0.1.0"
+description = ""
+authors = ["Denis Korolev <dvkorolev@hex.team>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+python-socketio = {extras = ["asyncio-client"], version = "^5.11.2"}
+loguru = "^0.7.2"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
