@@ -1,5 +1,9 @@
+from dataclasses import dataclass
+from functools import cache
 from os import getenv
+from queue import Queue
 import sys
+from typing import Generator
 from loguru import logger
 
 
@@ -33,3 +37,30 @@ def init_logger(
                 compression="zip",
                 serialize=True,
             )
+
+
+@dataclass
+class Task:
+    event: str
+    data: bytes
+
+
+class TaskQueue:
+    def __init__(self) -> None:
+        self.__task_queue: list[Task] = list()
+
+    def get_task(self) -> Generator[Task, None, None]:
+        try:
+            task = self.__task_queue.pop(0)
+            yield task
+        except IndexError:
+            yield None
+
+    def put(self, task: Task):
+        if len(self.__task_queue) <= 100:
+            self.__task_queue.append(task)
+
+
+@cache
+def get_task_queue():
+    return TaskQueue()

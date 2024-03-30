@@ -16,6 +16,11 @@ async def xy_event(sid, raw_data: bytes):
     pass
 
 
+@sio.on("connect")
+async def on_connect(sid, *args):
+    loguru.logger.info(f"{sid=} connected !")
+
+
 def run_server(run_args: dict):
     app = web.Application()
     # app.router.add_get("/", index)
