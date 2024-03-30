@@ -1,13 +1,14 @@
 import asyncio
-from functools import partial
 import sys
-from typing import AsyncGenerator
-import socketio
+from functools import partial
 from random import randint
+from typing import AsyncGenerator
 
-from proto import EVENT_XY, TASK_PERIOD, StructXY, clinet_config
-from utils import Task, enable_logger, get_task_queue, init_logger
 import loguru
+import socketio
+
+from src.proto import EVENT_XY, TASK_PERIOD, StructXY, clinet_config
+from src.utils import Task, enable_logger, get_task_queue, init_logger
 
 rand_int = partial(randint, -10000, 10000)
 
@@ -38,10 +39,13 @@ async def get_task() -> AsyncGenerator[Task, None]:
 
 async def manage_forever():
     config = clinet_config()
-    async with socketio.AsyncSimpleClient() as sio:
+    async with socketio.AsyncSimpleClient(
+        reconnection_delay=1, reconnection_delay_max=2
+    ) as sio:
         loguru.logger.info(f"Connecting to url=`{config['url']}`")
         await sio.connect(**config)
         async for task in get_task():
+            loguru.logger.info(f"Send {task=}")
             await sio.emit(task.event, task.data)
 
 

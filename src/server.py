@@ -2,8 +2,8 @@ import sys
 import socketio
 from aiohttp import web
 
-from proto import EVENT_XY, StructXY, config_dict
-from utils import enable_logger, init_logger
+from src.proto import EVENT_XY, StructXY, config_dict
+from src.utils import enable_logger, init_logger
 import loguru
 
 sio = socketio.AsyncServer(async_mode="aiohttp")

@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "socket-io"
+name = "src"
 version = "0.1.0"
 description = ""
 authors = ["Denis Korolev <dvkorolev@hex.team>"]
@@ -10,6 +10,9 @@ python = "^3.10"
 python-socketio = {extras = ["asyncio-client"], version = "^5.11.2"}
 loguru = "^0.7.2"
 
+[tool.poetry.scripts]
+server = "src.server:main"
+client = "src.client:main"
 
 [build-system]
 requires = ["poetry-core"]
